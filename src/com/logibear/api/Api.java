@@ -28,6 +28,7 @@ public class Api {
      * @since 1.0.0
      */
     public void start () {
+        // @TODO: Fix logging error message (https://www.slf4j.org/codes.html#StaticLoggerBinder)
         System.out.println("You can ignore the SLF4J logging errors.");
 
         get("comparison/:term1/:term2", (request, response) -> {
@@ -51,6 +52,7 @@ public class Api {
      * @since 1.0.0
      */
     private boolean comparison (String term1, String term2) {
+        // @TODO: Setup comparison
         return true;
     }
 }
