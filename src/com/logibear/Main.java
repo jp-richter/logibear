@@ -1,5 +1,6 @@
 package com.logibear;
 
+import com.logibear.api.Api;
 import com.logibear.parser.Tokenizer;
 
 /**
@@ -11,6 +12,9 @@ public class Main {
     public static void main( String[] args ) {
         Tokenizer tokenizer = new Tokenizer();
         initTokenizer( tokenizer );
+
+        Api api = new Api();
+        api.start();
     }
 
     private static void initTokenizer( Tokenizer t ) {
