@@ -1,6 +1,7 @@
 package com.logibear.api;
 
-import static spark.Spark.*;
+import static spark.Spark.port;
+import com.logibear.api.v1.Comparison;
 
 /**
  * <p>Provides a restful json api, that's easy to
@@ -31,28 +32,6 @@ public class Api {
         // @TODO: Fix logging error message (https://www.slf4j.org/codes.html#StaticLoggerBinder)
         System.out.println("You can ignore the SLF4J logging errors.");
 
-        get("comparison/:term1/:term2", (request, response) -> {
-            response.status(200);
-            response.type("application/json");
-
-            boolean status = comparison(request.params(":term1"), request.params(":term2"));
-            if (status) {
-                return "{\"status\":true,\"terms\":[\"" + request.params(":term1") + "\",\"" + request.params(":term2") + "\"]}";
-            } else {
-                return "{\"status\":false,\"terms\":[\"" + request.params(":term1") + "\",\"" + request.params(":term2") + "\"]}";
-            }
-        });
-    }
-
-    /**
-     * <p>Compare two logical terms.</p>
-     * @param term1 term1 to compare
-     * @param term2 term2 to compare
-     * @return  are terms equal
-     * @since 1.0.0
-     */
-    private boolean comparison (String term1, String term2) {
-        // @TODO: Setup comparison
-        return true;
+        Endpoint comparison = new Comparison("v1/comparison");
     }
 }
