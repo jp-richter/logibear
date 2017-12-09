@@ -134,6 +134,8 @@ public abstract class Endpoint implements Route {
     protected String render (int code, String message, Response response) {
         // define response header (always json)
         response.type("application/json");
+        response.header("Content-Encoding", "gzip");
+        response.header("Cache-Control", "max-age=604800");
 
         // status code incl. message
         Status status = new Status();
