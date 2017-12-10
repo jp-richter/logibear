@@ -6,15 +6,16 @@ import com.logibear.parser.Tokenizer;
 /**
  * Created by Jan on 06.12.2017.
  */
-
 public class Main {
 
     public static void main( String[] args ) {
         Tokenizer tokenizer = new Tokenizer();
         initTokenizer( tokenizer );
 
+        // open restful api
         Api api = new Api();
-        api.start();
+        // init endpoints
+        api.init();
     }
 
     private static void initTokenizer( Tokenizer t ) {

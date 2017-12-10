@@ -16,6 +16,7 @@ public class Comparison extends Endpoint {
      * <p>Defining the needed parameters by calling super
      * constructor.</p>
      * @param endpoint  endpoint verb
+     * @since 1.0.0
      */
     public Comparison (String endpoint) {
         super(endpoint + "/:term1/:term2");
@@ -28,6 +29,7 @@ public class Comparison extends Endpoint {
      * @param response  response object
      * @return  result
      * @throws Exception default
+     * @since 1.0.0
      */
     @Override
     public Object handle(Request request, Response response) throws Exception {

@@ -3,6 +3,7 @@ package com.logibear.api;
 import static spark.Spark.port;
 import static spark.Spark.notFound;
 import static spark.Spark.internalServerError;
+import static spark.Spark.path;
 import com.logibear.api.v1.Comparison;
 
 /**
@@ -46,10 +47,12 @@ public class Api {
      * comparison, compare two terms</p>
      * @since 1.0.0
      */
-    public void start () {
+    public void init () {
         // @TODO: Fix logging error message (https://www.slf4j.org/codes.html#StaticLoggerBinder)
         System.out.println("You can ignore the SLF4J logging errors.");
 
-        Endpoint comparison = new Comparison("v1/comparison");
+        path("v1/", () -> {
+            Endpoint comparison = new Comparison("comparison");
+        });
     }
 }

@@ -29,6 +29,7 @@ public abstract class Endpoint implements Route {
          * a message (can be a json string).</p>
          * @param status    status code and message
          * @param message   output message
+         * @since 1.0.0
          */
         Message (Status status, String message) {
             this.status = status;
@@ -50,6 +51,7 @@ public abstract class Endpoint implements Route {
         /**
          * <p>Default constructor to add status
          * code later.</p>
+         * @since 1.0.0
          */
         Status () {
 
@@ -60,6 +62,7 @@ public abstract class Endpoint implements Route {
          * custom status objects.</p>
          * @param code      status code
          * @param message   status message
+         * @since 1.0.0
          */
         Status (int code, String message) {
             this.code = code;
@@ -69,6 +72,7 @@ public abstract class Endpoint implements Route {
         /**
          * <p>Returns status code.</p>
          * @return  status code
+         * @since 1.0.0
          */
         int getCode() {
             return code;
@@ -77,6 +81,7 @@ public abstract class Endpoint implements Route {
         /**
          * <p>Returns status message.</p>
          * @return  status message
+         * @since 1.0.0
          */
         String getMessage() {
             return message;
@@ -86,6 +91,7 @@ public abstract class Endpoint implements Route {
          * <p>Sets status code.</p>
          * @param code  status code
          * @return  status code
+         * @since 1.0.0
          */
         int setCode (int code) {
             switch (code) {
@@ -109,6 +115,7 @@ public abstract class Endpoint implements Route {
         /**
          * <p>Sets status message.</p>
          * @param message   status message
+         * @since 1.0.0
          */
         void setMessage (String message) {
             this.message = message;
@@ -118,6 +125,7 @@ public abstract class Endpoint implements Route {
     /**
      * <p>Opening the endpoint.</p>
      * @param endpoint  endpoint
+     * @since 1.0.0
      */
     public Endpoint (String endpoint) {
         get(endpoint, this::handle);
@@ -130,6 +138,7 @@ public abstract class Endpoint implements Route {
      * @param message   custom message (response)
      * @param response  response object
      * @return  json string
+     * @since 1.0.0
      */
     protected String render (int code, String message, Response response) {
         // define response header (always json)
@@ -153,6 +162,7 @@ public abstract class Endpoint implements Route {
      * <p>Render a default error.</p>
      * @param response  response object
      * @return  json string
+     * @since 1.0.0
      */
     protected String error (Response response) {
         return render(500, "Undefined error.", response);
@@ -165,6 +175,7 @@ public abstract class Endpoint implements Route {
      * @param response  response object
      * @return  json string
      * @throws Exception default
+     * @since 1.0.0
      */
     @Override
     public Object handle(Request request, Response response) throws Exception {
