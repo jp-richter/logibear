@@ -2,43 +2,35 @@ import java.util.LinkedList;
 
 /**
  * Created by Jan on 08.12.2017.
+ *
  */
 
 public class Parser {
 
     private LinkedList<Token> tokens;
     private Token lookahead;
-    private ExpressionNode tree;
 
     public Parser() {
-        tree = null;
+        tokens = null;
+        lookahead = null;
     }
 
     @SuppressWarnings("unchecked")
-    public void parse( LinkedList<Token> tokens ) throws ParserException {
-        if( tokens.size() == 0 ) {
-            return;
+    public ExpressionTree parse( LinkedList<Token> toks ) throws ParserException {
+        if( toks.size() == 0 ) {
+            return null;
         }
 
-        this.tokens = (LinkedList<Token>) tokens.clone(); //safe cast
-        lookahead = this.tokens.getFirst();
+        tokens = (LinkedList<Token>) toks.clone(); //safe cast
+        lookahead = tokens.getFirst();
 
-        tree = new ExpressionNode();
-
-        expression();
+        ExpressionTree tree = expression();
 
         if( lookahead.token != Token.EPSILON ) {
             throw new ParserException("Unexpected symbol " +lookahead.sequence+ " found");
         }
-    }
 
-    public ExpressionNode getExpressionTree() throws ParserException {
-        if( tree != null ) {
-            return tree.getRoot();
-        }
-        else {
-            throw new ParserException("No expression tree was generated");
-        }
+        return tree;
     }
 
     private void nextToken() {
@@ -51,42 +43,82 @@ public class Parser {
         }
     }
 
-    private void expression() throws ParserException{
-        term();
+    private ExpressionTree expression() throws ParserException {
+        ExpressionTree term = term();
+
+        if( lookahead.token == Token.IMPLICATION ) {
+            ExpressionTree expression = new ExpressionTree( lookahead );
+            expression.addChild( term );
+
+            while( lookahead.token == Token.IMPLICATION ) {
+                nextToken();
+                expression.addChild( term() );
+            }
+
+            return expression;
+        }
+
+        return term;
     }
 
-    private void term() throws ParserException {
-        factor();
-        operator();
+    private ExpressionTree term() throws ParserException {
+        ExpressionTree subterm = subterm();
+
+        if( lookahead.token == Token.OR ) {
+            ExpressionTree term = new ExpressionTree( lookahead );
+            term.addChild( subterm );
+
+            while( lookahead.token == Token.OR ) {
+                nextToken();
+                term.addChild( subterm() );
+            }
+
+            return term;
+        }
+
+        return subterm;
     }
 
-    private void factor() throws ParserException {
-        //if token == !, read next token and put !var/bool in tree
+    private ExpressionTree subterm() throws ParserException {
+        ExpressionTree argument = argument();
+
+        if( lookahead.token == Token.AND ) {
+            ExpressionTree subterm = new ExpressionTree( lookahead );
+            subterm.addChild( argument );
+
+            while( lookahead.token == Token.AND ) {
+                nextToken();
+                subterm.addChild( argument() );
+            }
+
+            return subterm;
+        }
+
+        return argument;
+    }
+
+    private ExpressionTree argument() throws ParserException {
         if( lookahead.token == Token.OPEN_BRACKET ) {
             nextToken();
-            expression();
+            ExpressionTree argument = expression();
 
             if( lookahead.token != Token.CLOSE_BRACKET ) {
                 throw new ParserException("Closing brackets expected and " +lookahead.sequence+
                 "found instead");
             }
+            nextToken();
+
+            return argument;
         }
 
-        tree.add( lookahead );
-        nextToken();
-    }
 
-    private void operator() throws ParserException {
-        tree.add( lookahead );
+        if( lookahead.token != Token.BOOLEAN && lookahead.token != Token.VARIABLE ) {
+            throw new ParserException("Boolean argument expected and " +lookahead.sequence+
+                    "found instead");
+        }
+
+        ExpressionTree node = new ExpressionTree( lookahead );
         nextToken();
-        if( lookahead.token == Token.AND_OR) {
-            term();
-        }
-        else if( lookahead.token == Token.IMPLICATION ) {
-            expression();
-        }
-        else {
-            //lookahead == EPSILON
-        }
+        return node;
     }
 }
