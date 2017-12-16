@@ -14,7 +14,7 @@ public class Token {
     public static final int CLOSE_BRACKET = 7;
 
     public final int token;
-    public final String sequence;
+    public String sequence;
 
     public Token(int token, String sequence) {
         this.token = token;
