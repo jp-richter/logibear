@@ -1,9 +1,6 @@
 package com.logibear;
 
 import com.logibear.api.Api;
-import com.logibear.sql.Table;
-import com.logibear.sql.tables.Error;
-import com.logibear.sql.tables.Test;
 
 /**
  * Created by Jan on 06.12.2017.

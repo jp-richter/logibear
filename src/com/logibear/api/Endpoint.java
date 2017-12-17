@@ -22,7 +22,7 @@ public abstract class Endpoint implements Route {
     class Message {
 
         Status status;
-        String message;
+        Object message;
 
         /**
          * <p>Create a new message with a status and
@@ -31,7 +31,7 @@ public abstract class Endpoint implements Route {
          * @param message   output message
          * @since 1.0.0
          */
-        Message (Status status, String message) {
+        Message (Status status, Object message) {
             this.status = status;
             this.message = message;
         }
@@ -140,7 +140,7 @@ public abstract class Endpoint implements Route {
      * @return  json string
      * @since 1.0.0
      */
-    protected String render (int code, String message, Response response) {
+    protected String render (int code, Object message, Response response) {
         // define response header (always json)
         response.type("application/json");
         response.header("Content-Encoding", "gzip");
