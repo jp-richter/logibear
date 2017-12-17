@@ -1,3 +1,5 @@
+package com.logibear.parser;
+
 /**
  * Created by Jan on 08.12.2017.
  */

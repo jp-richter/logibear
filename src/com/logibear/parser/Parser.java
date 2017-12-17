@@ -1,3 +1,5 @@
+package com.logibear.parser;
+
 import java.util.LinkedList;
 
 /**
@@ -28,6 +30,10 @@ public class Parser {
 
         if( lookahead.token != Token.EPSILON ) {
             throw new ParserException("Unexpected symbol " +lookahead.sequence+ " found");
+        }
+
+        if( tree == null ) {
+            throw new ParserException("No tree was generated");
         }
 
         return tree;

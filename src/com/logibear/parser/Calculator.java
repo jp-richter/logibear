@@ -1,73 +1,32 @@
+package com.logibear.parser;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 
 /**
  * Created by Jan on 15.12.2017.
  *
- * TODO restructure evaluation and how results are stored
- * TODO handle case variables are not assigned
- * TODO check if parser results are null
  */
 
 public class Calculator {
 
-    private HashMap<String, Boolean> varAssignments;
-    private ExpressionTree first;
-    private ExpressionTree second;
+    private ExpressionTree left;
+    private ExpressionTree right;
+
+    private HashMap<String, String> varAssignments;
 
     private Tokenizer tok;
     private Parser pars;
 
     public Calculator() {
+        left = null;
+        right = null;
+
         varAssignments = new HashMap<>();
-        first = null;
-        second = null;
 
         tok = new Tokenizer();
         initTokenizer();
         pars = new Parser();
-    }
-
-    public void assignVar( String var, boolean value ) {
-        varAssignments.put( var, value );
-    }
-
-    public void clearAssignments() {
-        varAssignments.clear();
-    }
-
-    public boolean evaluateExpression( String expr ) throws ParserException {
-        tok.tokenize( expr );
-        LinkedList<Token> l = tok.getTokens();
-        first = pars.parse( l );
-
-        ExpressionTree temp = first.clone();
-        for( String key : varAssignments.keySet() ) {
-            temp.assignVariable( key, varAssignments.get( key ));
-        }
-
-        return temp.evaluate();
-    }
-
-    public boolean compareExpressions( String expr1, String expr2 ) throws ParserException {
-        tok.tokenize( expr2 );
-        LinkedList<Token> l = tok.getTokens();
-        second = pars.parse( l );
-
-        ExpressionTree temp = second.clone();
-        for( String key : varAssignments.keySet() ) {
-            temp.assignVariable( key, varAssignments.get( key ));
-        }
-
-        return temp.evaluate() == evaluateExpression( expr1 );
-    }
-
-    public ExpressionTree getFirstExprTree() {
-        return first;
-    }
-
-    public ExpressionTree getSecondExprTree() {
-        return second;
     }
 
     private void initTokenizer() {
@@ -78,5 +37,80 @@ public class Calculator {
         tok.add("->", 5);
         tok.add("\\(", 6);
         tok.add("\\)", 7);
+    }
+
+    public ExpressionTree getLeftTree() {
+        return left;
+    }
+
+    public ExpressionTree getRightTree() {
+        return right;
+    }
+
+    public void assignVar( String var, String value ) {
+        varAssignments.put( var, value );
+    }
+
+    public void clearAssignments() {
+        varAssignments.clear();
+    }
+
+    public boolean isEquivalent( String left, String right ) throws ParserException {
+        this.left = generateTree( left );
+        this.right = generateTree( right );
+
+        LinkedList<String> vars = this.left.getVariables();
+        vars.addAll( this.right.getVariables() );
+
+        int varCount = vars.size();
+        int length = (int)Math.pow(2, varCount) + 1;
+        String[][] possibilities = new String[length][varCount];
+
+        int count = 0;
+        for( int i = 0; i < length; i++ ) {
+            String bin = Integer.toBinaryString( count );
+            for( int j = bin.length(); j < varCount; j++ ) {
+                bin = "0" + bin;
+            }
+
+            int index = 0;
+
+            for( int j = 0; j < varCount; j++ ) {
+                if( i == 0 ) {
+                    possibilities[0][j] = vars.get( j );
+                }
+                else {
+                    String number = Character.toString( bin.charAt( index ) );
+                    possibilities[i][j] = number;
+
+                    index++;
+                }
+            }
+
+            if( i != 0 ) {
+                count++;
+            }
+        }
+
+        for( int i = 1; i < length; i++ ) {
+            ExpressionTree tempLeft = this.left.clone();
+            ExpressionTree tempRight = this.right.clone();
+
+            for( int j = 0; j < varCount; j++ ) {
+                tempLeft.assignVariable( possibilities[0][j], possibilities[i][j] );
+                tempRight.assignVariable( possibilities[0][j], possibilities[i][j] );
+            }
+            
+            if( tempLeft.evaluate() != tempRight.evaluate() ) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private ExpressionTree generateTree( String expression ) throws ParserException {
+        tok.tokenize( expression );
+        return pars.parse( tok.getTokens() );
     }
 }
