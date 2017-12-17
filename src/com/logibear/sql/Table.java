@@ -76,6 +76,42 @@ public abstract class Table {
 
     /**
      * <p></p>
+     * @param rows
+     * @since 1.0.0
+     */
+    public void showLast (int rows) {
+        String sql =
+                "SELECT * FROM (SELECT * FROM " + name + " ORDER BY id DESC LIMIT " + rows + ") ORDER BY id ASC";
+
+        try {
+            // get connection
+            Connection connection = getDatabase().getConnection();
+
+            // execute statement
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(sql);
+
+            // get columns number
+            ResultSetMetaData resultSetMetaData = resultSet.getMetaData();
+            int columnsNumber = resultSetMetaData.getColumnCount();
+
+            // print last i rows
+            int i = rows;
+            while (resultSet.next() && i > 0) {
+                System.out.println();
+                for (int x = 1; x < (columnsNumber + 1); x++) {
+                    System.out.print(resultSet.getString(x) + "  ");
+                }
+
+                i--;
+            }
+        } catch (SQLException e) {
+            System.out.println("Can not show elements of database " + name);
+        }
+    }
+
+    /**
+     * <p></p>
      * @return
      * @since 1.0.0
      */
