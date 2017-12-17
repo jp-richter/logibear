@@ -2,9 +2,9 @@ package com.logibear.api.v1;
 
 import com.google.gson.Gson;
 import com.logibear.api.Endpoint;
+import com.logibear.api.v1.gson.ComparisonResult;
 import com.logibear.parser.Calculator;
-import com.logibear.sql.tables.Requests;
-import spark.Request;
+import com.logibear.sql.tables.Request;
 import spark.Response;
 
 /**
@@ -16,7 +16,7 @@ import spark.Response;
 public class Comparison extends Endpoint {
 
     private Calculator calculator = new Calculator();
-    private Requests requests = new Requests();
+    private Request request = new Request();
 
     private Gson gson = new Gson();
 
@@ -40,7 +40,7 @@ public class Comparison extends Endpoint {
      * @since 1.0.0
      */
     @Override
-    public Object handle(Request request, Response response) throws Exception {
+    public Object handle(spark.Request request, Response response) throws Exception {
         // track time
         long start = System.currentTimeMillis();
 
@@ -51,7 +51,7 @@ public class Comparison extends Endpoint {
         // stop time
         long time = System.currentTimeMillis() - start;
         // log result into database
-        requests.insert("comparison", gson.toJson(comparisonResult), time);
+        this.request.insert("comparison", gson.toJson(comparisonResult), time);
 
         // render the result
         return render(200, comparisonResult, response);

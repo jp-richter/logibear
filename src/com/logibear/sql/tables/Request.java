@@ -6,15 +6,15 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class Requests extends Table {
+public class Request extends Table {
 
-    public Requests () {
+    public Request () {
         this(null, null, 0);
     }
 
-    public Requests (String endpoint, String result, long time) {
-        super("requests", new Log(),
-                "CREATE TABLE IF NOT EXISTS requests (\n" +
+    public Request (String endpoint, String result, long time) {
+        super("request", new Log(),
+                "CREATE TABLE IF NOT EXISTS request (\n" +
                         " id integer PRIMARY KEY,\n" +
                         " endpoint text NOT NULL,\n" +
                         " result text NOT NULL,\n" +
@@ -29,7 +29,7 @@ public class Requests extends Table {
 
     public void insert (String endpoint, String result, long time) {
         String sql =
-                "INSERT INTO requests(endpoint,result,time,timestamp) VALUES(?,?,?,datetime('now', 'localtime'))";
+                "INSERT INTO request(endpoint,result,time,timestamp) VALUES(?,?,?,datetime('now', 'localtime'))";
         try {
             // get connection
             Connection connection = getDatabase().getConnection();

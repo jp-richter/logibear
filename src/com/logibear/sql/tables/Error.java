@@ -2,7 +2,6 @@ package com.logibear.sql.tables;
 
 import com.logibear.sql.Table;
 import com.logibear.sql.databases.Log;
-
 import java.sql.*;
 
 /**

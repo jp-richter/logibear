@@ -22,7 +22,7 @@ public class Api {
      */
     public Api () {
         // you can setup the port right here
-        port(4567);
+        port(80);
 
         // custom not found exception
         notFound((request, response) -> {
@@ -51,8 +51,18 @@ public class Api {
         // @TODO: Fix logging error message (https://www.slf4j.org/codes.html#StaticLoggerBinder)
         System.out.println("You can ignore the SLF4J logging errors.");
 
-        path("v1/", () -> {
-            Endpoint comparison = new Comparison("comparison");
+        // api path
+        path("api/", () -> {
+
+            // v1
+            path("v1/", () -> {
+                Endpoint comparison = new Comparison("comparison");
+            });
+
+            // v2
+            path("v2/", () -> {
+
+            });
         });
     }
 }

@@ -1,4 +1,4 @@
-package com.logibear.api.v1;
+package com.logibear.api.v1.gson;
 
 /**
  * <p>Represents the result of a comparison
@@ -7,7 +7,7 @@ package com.logibear.api.v1;
  * @author Stephan Strate
  * @since 1.0.0
  */
-class ComparisonResult {
+public class ComparisonResult {
 
     String term1;
     String term2;
@@ -21,7 +21,7 @@ class ComparisonResult {
      * @param result    result
      * @since 1.0.0
      */
-    ComparisonResult(String term1, String term2, boolean result) {
+    public ComparisonResult(String term1, String term2, boolean result) {
         this.term1 = term1;
         this.term2 = term2;
         this.result = result;
