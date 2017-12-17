@@ -2,6 +2,7 @@ package com.logibear;
 
 import com.logibear.api.Api;
 import com.logibear.sql.Table;
+import com.logibear.sql.tables.Error;
 import com.logibear.sql.tables.Test;
 
 /**
@@ -14,8 +15,5 @@ public class Main {
         Api api = new Api();
         // init endpoints
         api.init();
-
-        Test table = new Test();
-        table.showAll();
     }
 }
