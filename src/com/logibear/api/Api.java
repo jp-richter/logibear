@@ -9,7 +9,7 @@ import com.logibear.api.v1.Comparison;
 /**
  * <p>Provides a restful json api, that's easy to
  * configure and easy to use.<br />
- * Example local usage: http://localhost:4567/[endpoint]/[arguments]</p>
+ * Example local usage: http://localhost:80/[endpoint]/[arguments]</p>
  * @author Stephan Strate
  * @since 1.0.0
  */

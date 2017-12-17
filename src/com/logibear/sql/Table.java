@@ -13,10 +13,12 @@ public abstract class Table {
     private Database database;
 
     /**
-     * <p></p>
-     * @param name
-     * @param database
-     * @param sql
+     * <p>Creates/represents sql tables. You can use some
+     * default methods, that work for every table. And manage
+     * database connection easily.</p>
+     * @param name      table name
+     * @param database  database object
+     * @param sql       sql expression
      * @since 1.0.0
      */
     public Table (String name, Database database, String sql) {
@@ -39,7 +41,8 @@ public abstract class Table {
     }
 
     /**
-     * <p></p>
+     * <p>Print all database rows (can take a
+     * while, depending on table size).</p>
      * @since 1.0.0
      */
     public void showAll () {
@@ -61,10 +64,10 @@ public abstract class Table {
             // print whole database
             System.out.println("Printing " + name + ":");
             while (resultSet.next()) {
-                System.out.println();
                 for (int i = 1; i < (columnsNumber + 1); i++) {
                     System.out.print(resultSet.getString(i) + "  ");
                 }
+                System.out.println();
             }
 
             // close connection
@@ -75,8 +78,8 @@ public abstract class Table {
     }
 
     /**
-     * <p></p>
-     * @param rows
+     * <p>Prints the last x rows.</p>
+     * @param rows  number of rows
      * @since 1.0.0
      */
     public void showLast (int rows) {
@@ -98,10 +101,10 @@ public abstract class Table {
             // print last i rows
             int i = rows;
             while (resultSet.next() && i > 0) {
-                System.out.println();
                 for (int x = 1; x < (columnsNumber + 1); x++) {
                     System.out.print(resultSet.getString(x) + "  ");
                 }
+                System.out.println();
 
                 i--;
             }
@@ -111,8 +114,8 @@ public abstract class Table {
     }
 
     /**
-     * <p></p>
-     * @return
+     * <p>Get the database name.</p>
+     * @return  {@code name}
      * @since 1.0.0
      */
     public String getName() {
@@ -120,8 +123,8 @@ public abstract class Table {
     }
 
     /**
-     * <p></p>
-     * @return
+     * <p>Get the database object.</p>
+     * @return  {@code database}
      * @since 1.0.0
      */
     public Database getDatabase() {

@@ -9,9 +9,9 @@ package com.logibear.api.v1.gson;
  */
 public class ComparisonResult {
 
-    String term1;
-    String term2;
-    boolean result;
+    private String term1;
+    private String term2;
+    private boolean result;
 
     /**
      * <p>Initializes a result of a comparison.

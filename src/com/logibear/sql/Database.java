@@ -6,7 +6,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 /**
- * <p></p>
+ * <p>Helps to create several databases in different
+ * folders. Easy to use/implements abstract class.
+ * Just extend it and call the super class. You can
+ * get connections and close them again with this class.</p>
  * @author Stephan Strate
  * @since 1.0.0
  */
@@ -18,9 +21,10 @@ public abstract class Database {
     private String url;
 
     /**
-     * <p></p>
-     * @param database
-     * @param path
+     * <p>Creates a Sqlite database, creating
+     * the needed path and database itself.</p>
+     * @param database  database name
+     * @param path      path extension
      * @since 1.0.0
      */
     public Database (String database, String path) {
@@ -39,8 +43,9 @@ public abstract class Database {
     }
 
     /**
-     * <p></p>
-     * @param ext
+     * <p>Creates the folders, that are given
+     * to store the databases in it.</p>
+     * @param ext   path extension
      * @since 1.0.0
      */
     private void createFolder (String ext) {
@@ -55,8 +60,8 @@ public abstract class Database {
     }
 
     /**
-     * <p></p>
-     * @return
+     * <p>Opens a new database connection.</p>
+     * @return  database connection
      * @since 1.0.0
      */
     public Connection getConnection () {
@@ -74,7 +79,7 @@ public abstract class Database {
     }
 
     /**
-     * <p></p>
+     * <p>Closes a open database connection.</p>
      * @since 1.0.0
      */
     public void closeConnection () {

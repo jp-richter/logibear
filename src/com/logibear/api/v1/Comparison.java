@@ -44,9 +44,13 @@ public class Comparison extends Endpoint {
         // track time
         long start = System.currentTimeMillis();
 
-        // get the result
-        boolean result = calculator.isEquivalent(request.params("term1"), request.params("term2"));
-        ComparisonResult comparisonResult = new ComparisonResult(request.params("term1"), request.params("term2"), result);
+        // get params
+        String term1 = request.params("term1");
+        String term2 = request.params("term2");
+
+        // get/create the result
+        boolean result = calculator.isEquivalent(term1, term2);
+        ComparisonResult comparisonResult = new ComparisonResult(term1, term2, result);
 
         // stop time
         long time = System.currentTimeMillis() - start;
