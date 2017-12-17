@@ -37,6 +37,7 @@ public class Calculator {
         tok.add("->", 5);
         tok.add("\\(", 6);
         tok.add("\\)", 7);
+        tok.add("\\!", 8);
     }
 
     public ExpressionTree getLeftTree() {
@@ -100,7 +101,7 @@ public class Calculator {
                 tempLeft.assignVariable( possibilities[0][j], possibilities[i][j] );
                 tempRight.assignVariable( possibilities[0][j], possibilities[i][j] );
             }
-            
+
             if( tempLeft.evaluate() != tempRight.evaluate() ) {
                 return false;
             }
@@ -112,5 +113,16 @@ public class Calculator {
     private ExpressionTree generateTree( String expression ) throws ParserException {
         tok.tokenize( expression );
         return pars.parse( tok.getTokens() );
+    }
+
+    public boolean evaluate( String expression ) throws ParserException {
+        left = generateTree( expression );
+        ExpressionTree temp = left.clone();
+
+        for( String key : varAssignments.keySet() ) {
+            temp.assignVariable( key, varAssignments.get( key ));
+        }
+
+        return temp.evaluate();
     }
 }

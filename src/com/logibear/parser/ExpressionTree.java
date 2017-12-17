@@ -13,10 +13,12 @@ public class ExpressionTree {
 
     private LinkedList<ExpressionTree> children;
     private Token token;
+    private boolean negated;
 
     public ExpressionTree( Token token ) {
         children = new LinkedList<>();
         this.token = token;
+        negated = false;
     }
 
     public void addChild( ExpressionTree node ) {
@@ -29,6 +31,10 @@ public class ExpressionTree {
 
     public Token getToken() {
         return token;
+    }
+
+    public void negate() {
+        negated = true;
     }
 
     @Override
@@ -74,26 +80,27 @@ public class ExpressionTree {
         switch( token.sequence ) {
 
             case "0":
-                return false;
+                return negated;
 
             case "1":
-                return true;
+
+                return !negated;
 
             case "&":
                 for( ExpressionTree c : children ) {
                     if( !c.evaluate() ) {
-                        return false;
+                        return negated;
                     }
                 }
-                return true;
+                return !negated;
 
             case "|":
                 for( ExpressionTree c : children ) {
                     if( c.evaluate() ) {
-                        return true;
+                        return !negated;
                     }
                 }
-                return false;
+                return negated;
 
             case "->":
                 boolean accumulator = true;
@@ -101,6 +108,9 @@ public class ExpressionTree {
                 while( !stack.isEmpty() ) {
                     accumulator = !accumulator || stack.getFirst().evaluate();
                     stack.pop();
+                }
+                if( negated ) {
+                    return !accumulator;
                 }
                 return accumulator;
 

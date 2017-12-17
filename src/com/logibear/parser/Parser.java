@@ -118,12 +118,23 @@ public class Parser {
         }
 
 
-        if( lookahead.token != Token.BOOLEAN && lookahead.token != Token.VARIABLE ) {
+        if( lookahead.token != Token.BOOLEAN
+                && lookahead.token != Token.VARIABLE
+                && lookahead.token != Token.NEGATION ) {
             throw new ParserException("Boolean argument expected and " +lookahead.sequence+
                     "found instead");
         }
 
-        ExpressionTree node = new ExpressionTree( lookahead );
+        ExpressionTree node;
+        if( lookahead.token == Token.NEGATION ) {
+            nextToken();
+            node = new ExpressionTree( lookahead );
+            node.negate();
+        }
+        else {
+            node = new ExpressionTree( lookahead );
+        }
+
         nextToken();
         return node;
     }
