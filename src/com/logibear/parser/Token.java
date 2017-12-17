@@ -1,3 +1,5 @@
+package com.logibear.parser;
+
 /**
  * Created by Jan on 08.12.2017.
  */
@@ -12,6 +14,7 @@ public class Token {
     public static final int IMPLICATION = 5;
     public static final int OPEN_BRACKET = 6;
     public static final int CLOSE_BRACKET = 7;
+    public static final int NEGATION = 8;
 
     public final int token;
     public String sequence;

@@ -1,20 +1,24 @@
+package com.logibear.parser;
+
 import java.util.LinkedList;
 
 /**
  * Created by Jan on 08.12.2017.
  *
  * TODO write enum for tokens/sequences
- * TODO if variables are not assigned return variable?
+ * TODO write method that reduces the tree
  */
 
 public class ExpressionTree {
 
     private LinkedList<ExpressionTree> children;
     private Token token;
+    private boolean negated;
 
     public ExpressionTree( Token token ) {
         children = new LinkedList<>();
         this.token = token;
+        negated = false;
     }
 
     public void addChild( ExpressionTree node ) {
@@ -27,6 +31,10 @@ public class ExpressionTree {
 
     public Token getToken() {
         return token;
+    }
+
+    public void negate() {
+        negated = true;
     }
 
     @Override
@@ -51,13 +59,13 @@ public class ExpressionTree {
         return b.toString();
     }
 
-    public void assignVariable( String var, boolean value ) {
+    public void assignVariable( String var, String value ) {
         if( token.sequence.equals( var ) ) {
-            if( value ) {
-                token.sequence = "1";
+            if( value.equals("0") || value.equals("1")) {
+                token.sequence = value;
             }
             else {
-                token.sequence = "0";
+                throw new IllegalArgumentException("'0' or '1' expected, but " +value+ " found instead");
             }
         }
         else {
@@ -72,26 +80,27 @@ public class ExpressionTree {
         switch( token.sequence ) {
 
             case "0":
-                return false;
+                return negated;
 
             case "1":
-                return true;
+
+                return !negated;
 
             case "&":
                 for( ExpressionTree c : children ) {
                     if( !c.evaluate() ) {
-                        return false;
+                        return negated;
                     }
                 }
-                return true;
+                return !negated;
 
             case "|":
                 for( ExpressionTree c : children ) {
                     if( c.evaluate() ) {
-                        return true;
+                        return !negated;
                     }
                 }
-                return false;
+                return negated;
 
             case "->":
                 boolean accumulator = true;
@@ -100,10 +109,24 @@ public class ExpressionTree {
                     accumulator = !accumulator || stack.getFirst().evaluate();
                     stack.pop();
                 }
+                if( negated ) {
+                    return !accumulator;
+                }
                 return accumulator;
 
             default:
                 throw new IllegalStateException("Valid token expected, but " +token.sequence+ " found instead");
         }
+    }
+
+    public LinkedList<String> getVariables() {
+        LinkedList<String> variables = new LinkedList<>();
+        if( token.token == Token.VARIABLE ) {
+            variables.add( token.sequence );
+        }
+        for( ExpressionTree c : children ) {
+            variables.addAll( c.getVariables() );
+        }
+        return variables;
     }
 }

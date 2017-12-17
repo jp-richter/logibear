@@ -1,3 +1,5 @@
+package com.logibear.parser;
+
 import java.util.LinkedList;
 
 /**
