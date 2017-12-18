@@ -21,6 +21,16 @@ public abstract class Database {
     private String url;
 
     /**
+     * <p>Creates a Sqlite database without
+     * an extended path.</p>
+     * @param database  database name
+     * @since 1.0.0
+     */
+    public Database (String database) {
+        this(database, "");
+    }
+
+    /**
      * <p>Creates a Sqlite database, creating
      * the needed path and database itself.</p>
      * @param database  database name

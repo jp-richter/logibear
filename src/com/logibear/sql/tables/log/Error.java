@@ -1,4 +1,4 @@
-package com.logibear.sql.tables;
+package com.logibear.sql.tables.log;
 
 import com.logibear.sql.Table;
 import com.logibear.sql.databases.Log;

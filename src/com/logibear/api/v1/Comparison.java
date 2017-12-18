@@ -4,7 +4,7 @@ import com.google.gson.Gson;
 import com.logibear.api.Endpoint;
 import com.logibear.api.v1.gson.ComparisonResult;
 import com.logibear.parser.Calculator;
-import com.logibear.sql.tables.Request;
+import com.logibear.sql.tables.log.Request;
 import spark.Response;
 
 /**

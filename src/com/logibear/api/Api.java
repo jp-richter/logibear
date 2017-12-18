@@ -1,10 +1,8 @@
 package com.logibear.api;
 
-import static spark.Spark.port;
-import static spark.Spark.notFound;
-import static spark.Spark.internalServerError;
-import static spark.Spark.path;
 import com.logibear.api.v1.Comparison;
+
+import static spark.Spark.*;
 
 /**
  * <p>Provides a restful json api, that's easy to
@@ -51,9 +49,16 @@ public class Api {
         // @TODO: Fix logging error message (https://www.slf4j.org/codes.html#StaticLoggerBinder)
         System.out.println("You can ignore the SLF4J logging errors.");
 
+        // check if api key is valid
+        before("api/*", (request, response) -> {
+            response.type("application/json");
+            response.header("Content-Encoding", "gzip");
+            response.header("Cache-Control", "max-age=604800");
+            halt(403, "{\"status\":{\"code\":403,\"message\":\"Forbidden\"},\"message\":null}");
+        });
+
         // api path
         path("api/", () -> {
-
             // v1
             path("v1/", () -> {
                 Endpoint comparison = new Comparison("comparison");
