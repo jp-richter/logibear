@@ -1,6 +1,7 @@
 package com.logibear.api;
 
 import com.logibear.api.v1.Comparison;
+import com.logibear.sql.tables.user.Key;
 
 import static spark.Spark.*;
 
@@ -12,6 +13,8 @@ import static spark.Spark.*;
  * @since 1.0.0
  */
 public class Api {
+
+    private Key key = new Key();
 
     /**
      * <p>Initialize restful api with port and
@@ -51,8 +54,12 @@ public class Api {
             response.header("Cache-Control", "max-age=604800");
 
             // check api key
-            if (true) {
-                // @TODO: Add api key verification
+            String api_key;
+            if ((api_key = request.queryParams("api_key")) != null) {
+                if (!key.enter(api_key)) {
+                    halt(403, "{\"status\":{\"code\":403,\"message\":\"Forbidden\"},\"message\":null}");
+                }
+            } else {
                 halt(403, "{\"status\":{\"code\":403,\"message\":\"Forbidden\"},\"message\":null}");
             }
         });

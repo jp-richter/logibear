@@ -2,6 +2,9 @@ package com.logibear.sql.tables.user;
 
 import com.logibear.sql.Table;
 import com.logibear.sql.databases.User;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 /**
  * <p></p>
@@ -24,6 +27,36 @@ public class Customer extends Table {
                         " birthday text NOT NULL,\n" +
                         " timestamp text NOT NULL\n" +
                         ");");
+    }
+
+    /**
+     * <p></p>
+     * @param company
+     * @param firstname
+     * @param lastname
+     * @param birthday
+     * @since 1.0.0
+     */
+    public void insert (String company, String firstname, String lastname, String birthday) {
+        String sql =
+                "INSERT INTO customer(company,firstname,lastname,birthday,timestamp) VALUES(?,?,?,?,datetime('now', 'localtime'))";
+        try {
+            // get connection
+            Connection connection = getDatabase().getConnection();
+
+            // prepare statement
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, company);
+            preparedStatement.setString(2, firstname);
+            preparedStatement.setString(3, lastname);
+            preparedStatement.setString(4, birthday);
+
+            // execute statement and close connection
+            preparedStatement.executeUpdate();
+            getDatabase().closeConnection();
+        } catch (SQLException e) {
+            System.out.println("Can not execute statement.");
+        }
     }
 
     // @TODO: add methods related to customers
