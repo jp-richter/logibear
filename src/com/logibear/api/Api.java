@@ -22,6 +22,8 @@ public class Api {
         // you can setup the port right here
         port(80);
 
+        // @TODO: set response types/headers globally (?)
+
         // custom not found exception
         notFound((request, response) -> {
             response.type("application/json");
@@ -69,5 +71,7 @@ public class Api {
 
             });
         });
+
+        // @TODO: Check if types/headers can be set in after()
     }
 }

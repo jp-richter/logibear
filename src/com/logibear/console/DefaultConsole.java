@@ -55,4 +55,6 @@ public class DefaultConsole extends Console {
             }
         }
     }
+
+    // @TODO: Add more console methods
 }

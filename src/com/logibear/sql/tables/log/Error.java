@@ -5,28 +5,39 @@ import com.logibear.sql.databases.Log;
 import java.sql.*;
 
 /**
- * <p></p>
+ * <p>Represents the Sqlite table error, which
+ * can be used to log errors and categorize them
+ * by section. Error log can be requested and
+ * printed in {@see DefaultConsole}.</p>
  * @author Stephan Strate
  * @since 1.0.0
  */
 public class Error extends Table {
 
     /**
-     * <p></p>
+     * <p>Just opens a connection to the
+     * table, no new line will be inserted.</p>
      * @since 1.0.0
      */
     public Error () {
         this(null, null);
     }
 
+    /**
+     * <p>Inserts a new row with section
+     * "default".</p>
+     * @param message   inserted message
+     * @since 1.0.0
+     */
     public Error (String message) {
         this("default", message);
     }
 
     /**
-     * <p></p>
-     * @param section
-     * @param message
+     * <p>Creates sql table/opens connection and
+     * can insert a new row.</p>
+     * @param section   selected section
+     * @param message   inserted message
      * @since 1.0.0
      */
     public Error (String section, String message) {
@@ -38,13 +49,16 @@ public class Error extends Table {
                         " timestamp text NOT NULL\n" +
                         ");");
 
+        // only insert message when message and section is given
         if (section != null && message != null) {
             insert(section, message);
         }
     }
 
     /**
-     * <p></p>
+     * <p>Inserts a new row to the given table,
+     * opens and closes the database connection
+     * automatically.</p>
      * @param section
      * @param message
      * @since 1.0.0
@@ -68,4 +82,6 @@ public class Error extends Table {
             System.out.println("Can not execute statement.");
         }
     }
+
+    // @TODO: Add methods to get errors by section/time etc.
 }

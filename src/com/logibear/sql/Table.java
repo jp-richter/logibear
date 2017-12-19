@@ -113,6 +113,8 @@ public abstract class Table {
         }
     }
 
+    // @TODO: add more request methods (filters etc)
+
     /**
      * <p>Get the database name.</p>
      * @return  {@code name}

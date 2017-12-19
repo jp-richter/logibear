@@ -16,6 +16,6 @@ public class Log extends Database {
      * @since 1.0.0
      */
     public Log () {
-        super("log.db", "");
+        super("log.db");
     }
 }

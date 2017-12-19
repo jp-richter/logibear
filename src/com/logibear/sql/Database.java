@@ -48,7 +48,7 @@ public abstract class Database {
             // close connection
             con.close();
         } catch (SQLException e) {
-            System.out.println("Can not create sql " + this.path + path + database);
+            System.out.println("Can not create sql database " + this.path + path + database + ".");
         }
     }
 
@@ -81,7 +81,7 @@ public abstract class Database {
             // open connection
             return con = DriverManager.getConnection(url);
         } catch (SQLException e) {
-            System.out.println("Can not open sql " + url);
+            System.out.println("Can not open sql connection " + url + ".");
         }
 
         // return null when error occurs
@@ -98,7 +98,7 @@ public abstract class Database {
                 con.close();
             }
         } catch (SQLException e) {
-            System.out.println("Can not close connection.");
+            System.out.println("Can not close sql connection " + url + ".");
         }
     }
 }
