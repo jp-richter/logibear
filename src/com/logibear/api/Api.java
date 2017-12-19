@@ -20,25 +20,17 @@ public class Api {
      */
     public Api () {
         // you can setup the port right here
-        port(80);
-
-        // @TODO: set response types/headers globally (?)
+        port(81);
 
         // custom not found exception
-        notFound((request, response) -> {
-            response.type("application/json");
-            response.header("Content-Encoding", "gzip");
-            response.header("Cache-Control", "max-age=604800");
-            return "{\"status\":{\"code\":404,\"message\":\"Not found\"},\"message\":null}";
-        });
+        notFound((request, response) ->
+            "{\"status\":{\"code\":404,\"message\":\"Not found\"},\"message\":null}"
+        );
 
         // custom internal server error exception
-        internalServerError((request, response) -> {
-            response.type("application/json");
-            response.header("Content-Encoding", "gzip");
-            response.header("Cache-Control", "max-age=604800");
-            return "{\"status\":{\"code\":500,\"message\":\"Internal Server Error\"},\"message\":null}";
-        });
+        internalServerError((request, response) ->
+            "{\"status\":{\"code\":500,\"message\":\"Internal Server Error\"},\"message\":null}"
+        );
     }
 
     /**
@@ -51,12 +43,18 @@ public class Api {
         // @TODO: Fix logging error message (https://www.slf4j.org/codes.html#StaticLoggerBinder)
         System.out.println("You can ignore the SLF4J logging errors.");
 
-        // check if api key is valid
+        // add specific things before api is called
         before("api/*", (request, response) -> {
+            // define response header (always json)
             response.type("application/json");
             response.header("Content-Encoding", "gzip");
             response.header("Cache-Control", "max-age=604800");
-            halt(403, "{\"status\":{\"code\":403,\"message\":\"Forbidden\"},\"message\":null}");
+
+            // check api key
+            if (true) {
+                // @TODO: Add api key verification
+                halt(403, "{\"status\":{\"code\":403,\"message\":\"Forbidden\"},\"message\":null}");
+            }
         });
 
         // api path
@@ -71,7 +69,5 @@ public class Api {
 
             });
         });
-
-        // @TODO: Check if types/headers can be set in after()
     }
 }
