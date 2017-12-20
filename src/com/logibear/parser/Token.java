@@ -17,7 +17,7 @@ public class Token {
     public static final int NEGATION = 8;
 
     public final int token;
-    public String sequence;
+    public final String sequence;
 
     public Token(int token, String sequence) {
         this.token = token;

@@ -39,10 +39,16 @@ public class ExpressionTree {
 
     @Override
     public ExpressionTree clone() {
-        ExpressionTree clone = new ExpressionTree( token );
+        ExpressionTree clone = new ExpressionTree( new Token( token.token, token.sequence ) );
+        if( negated ) {
+            clone.negate();
+        }
         for( ExpressionTree c : children ) {
-            clone.addChild( c );
-            c.clone();
+            ExpressionTree child = c.clone();
+            if( c.negated ) {
+                child.negate();
+            }
+            clone.addChild( child );
         }
         return clone;
     }
@@ -62,7 +68,7 @@ public class ExpressionTree {
     public void assignVariable( String var, String value ) {
         if( token.sequence.equals( var ) ) {
             if( value.equals("0") || value.equals("1")) {
-                token.sequence = value;
+                token = new Token( token.token, value );
             }
             else {
                 throw new IllegalArgumentException("'0' or '1' expected, but " +value+ " found instead");
@@ -87,12 +93,17 @@ public class ExpressionTree {
                 return !negated;
 
             case "&":
-                for( ExpressionTree c : children ) {
-                    if( !c.evaluate() ) {
-                        return negated;
-                    }
+                boolean accumulator1 = true;
+                LinkedList<ExpressionTree> stack1 = new LinkedList<>();
+                stack1.addAll( children );
+                while( !stack1.isEmpty() ) {
+                    accumulator1 = accumulator1 && stack1.getFirst().evaluate();
+                    stack1.pop();
                 }
-                return !negated;
+                if( negated ) {
+                    return !accumulator1;
+                }
+                return accumulator1;
 
             case "|":
                 for( ExpressionTree c : children ) {
@@ -103,16 +114,17 @@ public class ExpressionTree {
                 return negated;
 
             case "->":
-                boolean accumulator = true;
-                LinkedList<ExpressionTree> stack = (LinkedList<ExpressionTree>)children.clone(); //safe cast
-                while( !stack.isEmpty() ) {
-                    accumulator = !accumulator || stack.getFirst().evaluate();
-                    stack.pop();
+                boolean accumulator2 = true;
+                LinkedList<ExpressionTree> stack2 = new LinkedList<>();
+                stack2.addAll( children );
+                while( !stack2.isEmpty() ) {
+                    accumulator2 = !accumulator2 || stack2.getFirst().evaluate();
+                    stack2.pop();
                 }
                 if( negated ) {
-                    return !accumulator;
+                    return !accumulator2;
                 }
-                return accumulator;
+                return accumulator2;
 
             default:
                 throw new IllegalStateException("Valid token expected, but " +token.sequence+ " found instead");

@@ -61,7 +61,11 @@ public class Calculator {
         this.right = generateTree( right );
 
         LinkedList<String> vars = this.left.getVariables();
-        vars.addAll( this.right.getVariables() );
+        for( String v : this.right.getVariables() ) {
+            if( !vars.contains( v ) ) {
+                vars.add( v );
+            }
+        }
 
         int varCount = vars.size();
         int length = (int)Math.pow(2, varCount) + 1;
