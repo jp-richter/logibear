@@ -113,6 +113,24 @@ public abstract class Table {
         }
     }
 
+    /**
+     * <p>Drop whole table.</p>
+     * @since 1.0.0
+     */
+    public void drop () {
+        String sql =
+                "DROP TABLE " + name;
+
+        try {
+            Connection connection = getDatabase().getConnection();
+            Statement statement = connection.createStatement();
+            statement.execute(sql);
+            getDatabase().closeConnection();
+        } catch (SQLException e) {
+            System.out.println("Can not execute.");
+        }
+    }
+
     // @TODO: add more request methods (filters etc)
 
     /**

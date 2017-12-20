@@ -73,7 +73,7 @@ abstract class Console {
             } catch (IllegalAccessException e) {
                 System.out.println("Internal error. No permission to call method.");
             } catch (InvocationTargetException e) {
-                System.out.println("Internal error.");
+                System.out.println("Can not execute console method (wrong arguments).");
             }
         }
     }

@@ -32,8 +32,11 @@ public class Key extends Table {
                         " total_requests integer NOT NULL,\n" +
                         " refill_interval integer NOT NULL,\n" +
                         " refill_last text NOT NULL,\n" +
+                        " host text NOT NULL,\n" +
                         " timestamp text NOT NULL\n" +
                         ");");
+
+        // @TODO: Add host to all methods
     }
 
     /**

@@ -32,9 +32,16 @@ public class DefaultConsole extends Console {
                     break;
                 }
 
+                // clear table (by dropping it)
+                case "clear": {
+                    // @TODO: Check if dropping the table causes bug, when inserting new rows in same instance
+                    error.drop();
+                    break;
+                }
+
                 // show a specific amount of errors
                 case "last": {
-                    if (args[1] != null) {
+                    if (args.length > 1 && args[1] != null) {
                         try {
                             // parse input number
                             error.showLast(Integer.parseInt(args[1]));
@@ -54,6 +61,36 @@ public class DefaultConsole extends Console {
                 }
             }
         }
+    }
+
+    /**
+     * <p></p>
+     * @param args
+     * @since 1.0.0
+     */
+    @Method
+    protected void customer (String[] args) {
+        // @TODO: Customer/key management here
+    }
+
+    /**
+     * <p></p>
+     * @param args
+     * @since 1.0.0
+     */
+    @Method
+    protected void request (String[] args) {
+        // @TODO: Statistics and request management
+    }
+
+    /**
+     * <p></p>
+     * @param args
+     * @since 1.0.0
+     */
+    @Method
+    protected void event (String[] args) {
+        // @TODO: Like error
     }
 
     // @TODO: Add more console methods
