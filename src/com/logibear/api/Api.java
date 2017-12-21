@@ -23,7 +23,7 @@ public class Api {
      */
     public Api () {
         // you can setup the port right here
-        port(81);
+        port(4567);
 
         // custom not found exception
         notFound((request, response) ->
@@ -47,11 +47,12 @@ public class Api {
         System.out.println("You can ignore the SLF4J logging errors.");
 
         // add specific things before api is called
-        before("api/*", (request, response) -> {
+        before("/*", (request, response) -> {
             // define response header (always json)
             response.type("application/json");
             response.header("Content-Encoding", "gzip");
             response.header("Cache-Control", "max-age=604800");
+            response.header("Access-Control-Allow-Origin", "*");
 
             // check api key
             String api_key;
@@ -65,7 +66,7 @@ public class Api {
         });
 
         // api path
-        path("api/", () -> {
+        path("/", () -> {
             // v1
             path("v1/", () -> {
                 Endpoint comparison = new Comparison("comparison");
