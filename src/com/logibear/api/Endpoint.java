@@ -2,6 +2,7 @@ package com.logibear.api;
 
 import static spark.Spark.get;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -149,7 +150,7 @@ public abstract class Endpoint implements Route {
         Message renderMessage = new Message(status, message);
 
         // parse to json
-        Gson gson = new Gson();
+        Gson gson = new GsonBuilder().disableHtmlEscaping().create();
         return gson.toJson(renderMessage);
     }
 
