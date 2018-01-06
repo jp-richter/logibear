@@ -1,6 +1,7 @@
 package com.logibear.api.v1;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.logibear.api.Endpoint;
 import com.logibear.api.v1.gson.ComparisonResult;
 import com.logibear.parser.Calculator;
@@ -18,7 +19,7 @@ public class Comparison extends Endpoint {
     private Calculator calculator = new Calculator();
     private Request request = new Request();
 
-    private Gson gson = new Gson();
+    private Gson gson = new GsonBuilder().disableHtmlEscaping().create();
 
     /**
      * <p>Defining the needed parameters by calling super
